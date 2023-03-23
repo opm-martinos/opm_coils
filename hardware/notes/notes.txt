@@ -1,0 +1,81 @@
+
+(we've done the y coil)
+
+each u-channel = 0.313 in = 7.9502 mm = w
+
+
+
+
+   8 mm
++........+........+........+........+........+        +........+........+........+........+........+ 
+Gz       Bz       Gx       Bx       Gy       By       By      Gy        Bx       Gx       Bz      Gz
+                                              |140.0 cm|
+                                    |--------- 140.8 cm -------|
+                           |------------------ 141.6 cm -----------------|
+                  |--------------------------- 142.4 cm ---------------------------|
+         |------------------------------------ 143.2 cm ------------------------------------|
+|--------------------------------------------- 144.0 cm --------------------------------------------|
+
+
+N_suh = 50 (for all)
+
+By: printed
+
+Gy: 
+'efficiency (nT/mA)': 7.94, 
+'resistance (ohm)': 7.62, 
+'length (m)': 155.11, 
+(coil sz: 1.408)
+
+Bx 
+'efficiency (nT/mA)': 1.47
+'resistance (ohm)': 10.67, 
+'length (m)': 217.13, 
+(coil sz: 1.417)
+
+Gx
+'efficiency (nT/mA)': 7.80, 
+'resistance (ohm)': 7.70, 
+'length (m)': 156.88,
+(coil sz: 1.424)
+
+Bz:
+'efficiency (nT/mA)': 6.50,
+'resistance (ohm)': 8.04,
+'length (m)': 163.56,
+(coil sz: 1.43)
+
+Gz:
+'efficiency (nT/mA)': -15.73, 
+'resistance (ohm)': 5.36, 
+'length (m)': 109.13,
+(coil sz: 1.44)
+
+
+Bx: done
+Gx: done
+Gy: done
+
+Gz: 
+Bz: 
+
+Comments by Mainak
+
+- check if the solder pads are aligned (Bx)
+- Mainak: check the gradient targets
+- Fix arrow in Bz inner loop
+- Add arrow in Gz
+
+Checklist of things to be checked
+
+- check arrows are correctly pointed
+- check length of the coil
+- solder pad alignment
+- power terminals in the correct corner (and aligned?)
+- run DRC after shorting
+
+Padma: 12/10/23 : last check before sending to hopetime
+
+-- the power terminals on the By (already printed board): (X,Y) = (30,60)
+
+

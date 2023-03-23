@@ -1,0 +1,58 @@
+[build-system]
+requires = ["setuptools", "setuptools-scm"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "opmcoils"
+authors = [
+    {name = "Mainak Jas", email = "mainakjas@gmail.com"},
+]
+description = "Nulling coil design for OPM-MEG."
+readme = "README.rst"
+requires-python = ">=3.9"
+keywords = ["meg", "opm", "coils"]
+license = {text = "BSD-3-Clause"}
+classifiers = [
+            "Intended Audience :: Science/Research",
+            "Intended Audience :: Developers",
+            "License :: OSI Approved",
+            "Programming Language :: Python",
+            "Topic :: Software Development",
+            "Topic :: Scientific/Engineering",
+            "Operating System :: Microsoft :: Windows",
+            "Operating System :: POSIX",
+            "Operating System :: Unix",
+            "Operating System :: MacOS",
+            "Programming Language :: Python :: 3",
+            "Programming Language :: Python :: 3.9",
+            "Programming Language :: Python :: 3.10",
+            "Programming Language :: Python :: 3.11",
+            "Programming Language :: Python :: 3.12",
+]
+dependencies = [
+    "numpy",
+    "scipy",
+    "trimesh",
+    "matplotlib",
+    "bfieldtools",
+    "pyvista",
+    "shapely"
+]
+
+dynamic = ["version"]
+
+[tool.setuptools]
+packages = ["opmcoils"]
+license-files = ["LICENSE"]
+
+[project.optional-dependencies]
+docs = ["mne", "h5io", "sphinx-gallery", "pydata_sphinx_theme"]
+rest = ["mosek"]
+
+[tool.setuptools.dynamic]
+version = {attr = "opmcoils.__version__"}
+readme = {file = ["README.rst"]}
+
+[project.urls]
+Documentation = "http://opm-martinos.github.io/nulling_coils/"
+Repository = "https://github.com/opm-martinos/cmeg_coil_design/"
