@@ -20,7 +20,7 @@ author = 'Mainak Jas'
 
 extensions = [
     'sphinx_gallery.gen_gallery',
-    # 'sphinx.ext.viewcode',  # uncomment when we open source the code
+    'sphinx.ext.viewcode',
     'sphinx.ext.autosummary',
     'sphinx.ext.autodoc',
     'sphinx.ext.intersphinx',
@@ -91,7 +91,7 @@ html_theme_options = {
     "icon_links": [
         {
             "name": "GitHub",
-            "url": "https://github.com/opm-martinos/cmeg_coil_design",
+            "url": "https://github.com/opm-martinos/opm_coils",
             "icon": "fab fa-github-square",
         },
     ],
