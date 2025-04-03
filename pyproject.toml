@@ -46,7 +46,8 @@ packages = ["opmcoils"]
 license-files = ["LICENSE"]
 
 [project.optional-dependencies]
-docs = ["mne", "h5io", "sphinx-gallery", "pydata_sphinx_theme"]
+docs = ["mne", "h5io", "sphinx", "sphinx-gallery", "pydata_sphinx_theme",
+        "numpydoc", "sphinx_copybutton"]
 rest = ["mosek"]
 
 [tool.setuptools.dynamic]

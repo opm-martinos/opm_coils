@@ -127,6 +127,7 @@ def get_2D_point_grid(center, n=8, sidelength=0.5):
 
     return target_points, xx
 
+
 def get_target_field(target_type, target_points, lmax=3):
     """Set field in target region using spherical harmonics.
 
@@ -142,12 +143,16 @@ def get_target_field(target_type, target_points, lmax=3):
     if 'gradient' in target_type:
 
         # see Brookes (2018)
-        if target_type == 'gradient_x':
+        if target_type == 'gradient_xz':
             blm[4] += 1  # dBx/dz = dBz/dx (l=2, m=-1)
-        elif target_type == 'gradient_y':
+        elif target_type == 'gradient_yz':
             blm[6] += 1  # dBy/dz = dBz/dy (l=2, m=1)
-        elif target_type == 'gradient_z':
+        elif target_type == 'gradient_zz':
             blm[5] += 1  # dBz/dz = -dBx/dx = -2dBy/dy (l=2, m=0)
+        elif target_type == 'gradient_xx':
+            blm[6] += 1  # dBx/dx
+        elif target_type == 'gradient_xy':
+            blm[7] += 1  # dBx/dy
 
         sphfield = sphtools.field(target_points, alm, blm, lmax, R=1.)
         target_field = sphfield / np.max(sphfield)
