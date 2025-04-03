@@ -26,7 +26,7 @@ N_contours = 30  # Use N_contours = 30 for gradient_z
 save = False
 
 center = np.array([0, 0, 0])
-target_type = 'gradient_xx'  # 'gradient_xx' | 'gradient_yz' | 'dc_x' | 'dc_y'
+target_type = 'gradient_xx'  # 'gradient_xx' | 'gradient_xy' | 'dc_x' | 'dc_y'
 
 # %%
 # Next we define the output directory containing the kicad files for our
@@ -45,7 +45,9 @@ header_type = {'dc_x': 'vert',
                'dc_z': 'vert',
                'gradient_xz': 'vert',
                'gradient_yz': 'horz',
-               'gradient_zz': 'vert'}
+               'gradient_zz': 'vert',
+               'gradient_xx': 'horz',
+               'gradient_xy': 'horz'}
 bounds_wholeloop = {'dc_x': False,
                     'dc_y': True,
                     'dc_z': False, 
@@ -97,7 +99,9 @@ coil.fit(target_points, target_field)
 # we can also specify the trace width and the copper thickness used
 # in the PCB design.
 coil.discretize(N_contours=N_contours, trace_width=trace_width, cu_oz=cu_oz)
+coil.plot_coil()
 
+sfdfdf
 # %%
 # To evaluate the effect of the shielded room, we can add it to the coil
 # specification and it will be taken into account for estimating the
@@ -115,7 +119,7 @@ B_target = coil.predict(target_points)
 # %%
 # The field can be computed and plotted by doing
 plotter = coil.plot_field(target_points)
-
+sdfdf
 # %%
 # We can evaluate the coil for metrics such as efficiency
 # and also compute its dimensions by doing
