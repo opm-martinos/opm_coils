@@ -150,9 +150,9 @@ def get_target_field(target_type, target_points, lmax=3):
         elif target_type == 'gradient_zz':
             blm[5] += 1  # dBz/dz = -dBx/dx = -2dBy/dy (l=2, m=0)
         elif target_type == 'gradient_xx':
-            blm[3] += 1  # dBx/dx
+            blm[3] += 1  # dBx/dx (l=2, m=-2)
         elif target_type == 'gradient_xy':
-            blm[7] += 1  # dBx/dy
+            blm[7] += 1  # dBx/dy (l=2, m=2)
 
         sphfield = sphtools.field(target_points, alm, blm, lmax, R=1.)
         target_field = sphfield / np.max(sphfield)
