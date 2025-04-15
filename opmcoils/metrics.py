@@ -7,7 +7,7 @@ import numpy as np
 
 def _percent_error(biplanar_coil, target_field, target_points, target_type):
     field = biplanar_coil.predict(target_points)
-    ax = {'x': 0, 'y': 1, 'z': 2}[target_type.split('_')[1]]
+    ax = {'x': 0, 'y': 1, 'z': 2}[target_type.split('_')[1][0]]
     return np.abs((field[:, ax] - target_field[:, ax]) / target_field[:, ax])
 
 def homogeneity(biplanar_coil, target_field, target_points, target_type,
@@ -19,7 +19,7 @@ def homogeneity(biplanar_coil, target_field, target_points, target_type,
 
 def efficiency(biplanar_coil, target_points, target_points_z, target_type):
     """Compute efficiency with discretized current loops."""
-    ax = {'x': 0, 'y': 1, 'z': 2}[target_type.split('_')[1]]
+    ax = {'x': 0, 'y': 1, 'z': 2}[target_type.split('_')[1][0]]
     current_loops = biplanar_coil.line_conductor_
     mesh = biplanar_coil.remove_shield()
 

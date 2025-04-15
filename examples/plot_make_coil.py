@@ -26,7 +26,7 @@ N_contours = 30  # Use N_contours = 30 for gradient_z
 save = False
 
 center = np.array([0, 0, 0])
-target_type = 'dc_y'  # 'gradient_x' | 'gradient_y' | 'dc_x' | 'dc_y'
+target_type = 'gradient_yz'  # 'gradient_xx' | 'gradient_xy' | 'dc_x' | 'dc_y'
 
 # %%
 # Next we define the output directory containing the kicad files for our
@@ -37,32 +37,37 @@ pcb_dir = Path(opmcoils.__path__[0]).parents[0]
 output_dir = {'dc_x': 'Bx_coil',
               'dc_y': 'By_coil_dev',
               'dc_z': 'Bz_coil',
-              'gradient_x': 'Gx_coil',
-              'gradient_y': 'Gy_coil',
-              'gradient_z': 'Gz_coil'}
+              'gradient_xz': 'Gx_coil',
+              'gradient_yz': 'Gy_coil',
+              'gradient_zz': 'Gz_coil'}
 header_type = {'dc_x': 'vert',
                'dc_y': 'horz',
                'dc_z': 'vert',
-               'gradient_x': 'vert',
-               'gradient_y': 'horz',
-               'gradient_z': 'vert'}
+               'gradient_xz': 'vert',
+               'gradient_yz': 'horz',
+               'gradient_zz': 'vert',
+               'gradient_xx': 'horz',
+               'gradient_xy': 'horz'}
 bounds_wholeloop = {'dc_x': False,
                     'dc_y': True,
                     'dc_z': False, 
-                    'gradient_x': False,
-                    'gradient_y': True,
-                    'gradient_z': False}
+                    'gradient_xz': False,
+                    'gradient_yz': True,
+                    'gradient_zz': False}
 
 # %%
 # Next we will define the parameters of our coils
 
-standoffs = {"dc_y": 0.1400, "gradient_y": 0.1408,
-             "dc_x": 0.1416, "gradient_x": 0.1424, 
-             "dc_z": 0.1432, "gradient_z": 0.1440}
+standoffs = {"dc_y": 0.1400, "gradient_yz": 0.1408,
+             "dc_x": 0.1416, "gradient_xz": 0.1424,
+             "dc_z": 0.1432, "gradient_zz": 0.1440,
+                             "gradient_xx": 0.1456,
+                             "gradient_xy": 0.1472}
 
-scaling = {"dc_y": 0.1400, "gradient_y": 0.1420,
-           "dc_x": 0.1420, "gradient_x": 0.1436, 
-           "dc_z": 0.1441, "gradient_z": 0.14565}
+scaling = {"dc_y": 0.1400, "gradient_yz": 0.1420,
+           "dc_x": 0.1420, "gradient_xz": 0.1436,
+           "dc_z": 0.1441, "gradient_zz": 0.14565,
+           "gradient_xx": 0.146, "gradient_xy": 0.148}  # unsure how this was chosen?
 
 trace_width = 5.  # mm
 cu_oz = 2.  # oz per ft^2
@@ -94,6 +99,7 @@ coil.fit(target_points, target_field)
 # we can also specify the trace width and the copper thickness used
 # in the PCB design.
 coil.discretize(N_contours=N_contours, trace_width=trace_width, cu_oz=cu_oz)
+coil.plot_coil()
 
 # %%
 # To evaluate the effect of the shielded room, we can add it to the coil

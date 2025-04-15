@@ -23,7 +23,18 @@ Install ``opmcoils`` by doing::
 
     $ pip install .
 
-Advanced users or contributors may add the ``-e`` flag to create an editable install.
+Advanced users or contributors may add the ``-e`` flag to create an editable install and they
+may also install the dependencies required to build the documentation::
+
+    $ pip install -e .[docs]
+
+or:
+
+    $ pip install -e .[full]
+
+Note that `Mosek <https://www.mosek.com/>`_ is required for the optimization
+of the coil design. Please refer to the documentation for installation
+instructions.
 
 Usage
 ^^^^^
@@ -46,7 +57,7 @@ cite::
     Jas M., Kamataris J., Matsubara T., Dong C., Motta G.,
     Sohrabpour A., Ahlfors S.P., Hamalainen M., Okada Y., and Sundaram P..
     Biplanar nulling coil system for OPM-MEG using printed circuit boards.
-    2024.
+    BioRxiv 2025.02.19.638883. 2025.
 
 Funding
 ^^^^^^^
