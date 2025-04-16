@@ -322,18 +322,36 @@ class BiplanarCoil:
     def evaluate(self, target_type, target_points, target_field,
                  target_points_z, metrics='all'):
         """Evaluate the coil.
-        
+
         Parameters
         ----------
+        target_type : str
+            The target type. 'dc_x', 'dc_y', 'dc_z', 'gradient_xz' etc.
         target_points : array, (n_points, 3)
             Plot the field at the target points.
+        target_field : array, (n_points, 3)
+            The target field at the target points.
+        target_points_z : array, (n_points, 3)
+            The target points in the z direction.
+        metrics : str | list of str
+            The metrics to evaluate. Can be 'efficiency', 'error',
+            'homogeneity', 'inductance', 'resistance', 'length',
+            'target_radius' or 'all'.
         """
-        if metrics == 'all':
-            metrics = ['efficiency', 'error', 'homog', 'inductance',
+        all_metrics = ['efficiency', 'error', 'homogeneity', 'inductance',
                        'resistance', 'length', 'target_radius']
+        if metrics == 'all':
+            metrics = metrics
+        elif isinstance(metrics, str):
+            metrics = [metrics]
 
         scores = dict()
         for metric in metrics:
+
+            if metric not in all_metrics:
+                raise ValueError(f'Metrics should be one of {all_metrics}.'
+                                 f' Got {metrics}.')
+
             if metric == 'efficiency':
                 ef, _ = efficiency(self, target_points,
                                    target_points_z, target_type)
@@ -341,7 +359,7 @@ class BiplanarCoil:
             elif metric == 'error':
                 err = error(self, target_field, target_points, target_type)
                 scores['error'] = ef
-            elif metric == 'homog':
+            elif metric == 'homogeneity':
                 hmg = homogeneity(self, target_field, target_points, target_type)
                 scores['homogeneity (%)'] = hmg
             elif metric == 'inductance':
