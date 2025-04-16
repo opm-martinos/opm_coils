@@ -100,6 +100,17 @@ add_ch_loc(evoked_opm, info_helmet, ch_mapping)
 evoked_opm.plot()
 
 # %%
+# We use HFC to remove background artifacts.
+projs_hfc = mne.preprocessing.compute_proj_hfc(evoked_opm.info, order=1)
+evoked_opm.add_proj(projs_hfc)
+evoked_opm.apply_proj()
+
+# Alternatively, one could use SSP:
+# projs_ssp = mne.compute_proj_epochs(epochs_opm.copy().crop(tmax=0), n_mag=2)
+# evoked_opm.add_proj(projs_ssp)
+# evoked_opm.apply_proj()
+
+# %%
 # Let us now process the SQUID data.
 raw_squid = mne.io.read_raw_fif(raw_fname_squid, raw_fname_squid, preload=True)
 raw_squid.pick_types(meg='mag', stim=True)
@@ -127,7 +138,6 @@ evoked_squid.plot(ylim=dict(mag=(-300, 300)))
 #
 # That is why, we pick sensors in similar locations on the
 # OPM-MEG and SQUID-MEG and compare the evoked responses.
-
 squid_chs = ['MEG0431', 'MEG0311']
 opm_chs = ['MEG30', 'MEG09']
 scale = 1e15
@@ -152,3 +162,18 @@ fig.text(0.02, 0.45, 'OPM data (fT)', va='center',
 axes[1].set_xlabel('Time (ms)')
 plt.tight_layout()
 plt.show()
+
+# Add inset
+squid_ch, opm_ch = squid_chs[0], opm_chs[0]
+inset_ax = axes[0].inset_axes([0.25, 0.5, 0.08, 0.45],
+                              xlim=(10, 30), ylim=(-150, 200),
+                              xticks=[], yticks=[])
+inset_ax.plot(evoked_opm.times * 1e3,
+              evoked_opm.copy().pick([opm_ch]).data[0] * scale,
+              '#e66101')
+inset_ax.plot(evoked_squid.times * 1e3,
+              evoked_squid.copy().pick([squid_ch]).data[0] * scale,
+              '#5e3c99')
+for spine in inset_ax.spines.values():
+    spine.set_linestyle('dotted')
+axes[0].indicate_inset_zoom(inset_ax, edgecolor='black', linestyle='dotted')
