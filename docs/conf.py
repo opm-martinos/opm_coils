@@ -98,6 +98,9 @@ html_theme_options = {
     "secondary_sidebar_items": ["page-toc"],
     "show_toc_level": 1,
     "show_prev_next": False,
+    "analytics": {
+        "google_analytics_id": "G-V6NB03PJPB"
+    }
 }
 
 html_sidebars = {
