@@ -101,6 +101,11 @@ coil.fit(target_points, target_field)
 coil.discretize(N_contours=N_contours, trace_width=trace_width, cu_oz=cu_oz)
 coil.plot_coil()
 
+metrics = coil.evaluate(target_type, target_points, target_field,
+                        points_z, 'homogeneity')
+
+sdfdfdf
+
 # %%
 # To evaluate the effect of the shielded room, we can add it to the coil
 # specification and it will be taken into account for estimating the
