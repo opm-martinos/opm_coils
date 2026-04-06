@@ -1,3 +1,4 @@
+from .base_coil import BaseCoil
 from .biplanar_coil import (BiplanarCoil, get_sphere_points, get_target_field,
                             get_2D_point_grid)
 from .cylindrical_coil import CylindricalCoil, flatten_loops
