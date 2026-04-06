@@ -35,7 +35,7 @@ height_scale = 0.25   # 25 cm height
 # %%
 # Load the cylindrical mesh from bfieldtools and scale it.
 
-mesh = load_example_mesh('cylinder_open')
+mesh = load_example_mesh('open_cylinder')
 # The default mesh has radius ~1 and height ~1; apply independent scaling
 mesh.vertices[:, 0] *= radius_scale   # x
 mesh.vertices[:, 1] *= radius_scale   # y

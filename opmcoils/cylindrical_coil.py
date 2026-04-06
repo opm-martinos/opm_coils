@@ -55,7 +55,7 @@ class CylindricalCoil:
         A suitable mesh can be obtained via::
 
             from bfieldtools.utils import load_example_mesh
-            mesh = load_example_mesh('cylinder_open')
+            mesh = load_example_mesh('open_cylinder')
             mesh.apply_scale(radius_scale)
 
     center : array, shape (3,)
