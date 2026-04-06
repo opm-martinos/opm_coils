@@ -21,8 +21,6 @@ from bfieldtools.line_conductor import LineConductor
 from bfieldtools.viz import plot_3d_current_loops
 
 from .base_coil import BaseCoil
-from .line_drawer import LineDrawer
-from .file_io import get_loop_colors
 
 
 def trimesh_to_pv(mesh):
@@ -328,44 +326,19 @@ class BiplanarCoil(BaseCoil):
         plotter.camera_position = 'xy'
         return plotter
 
-    def make_cuts(self):
-        """Make cuts to join loops."""
-        import matplotlib.pyplot as plt
-        from .make_pcb import join_loops_at_cuts
+    def _prepare_loops_for_cuts(self):
+        """Prepare loops for the make_cuts workflow.
 
-        # Discard one panel of the pair
-        loops = list()
+        Selects only the positive-z panel of the biplanar pair, closes each
+        loop, and returns 3D (mm) and 2D (x, y mm) representations.
+        """
+        loops_3d_mm = []
         for loop in self.loops_:
             if np.allclose(loop[:, 2], self._standoff[2]):
-                loop = [pt for pt in loop] + [loop[0]]  # make closed loop
-                loops.append((np.array(loop) * 1000))
+                loops_3d_mm.append(np.vstack([loop, loop[0]]) * 1000)
 
-        colors = get_loop_colors([np.array(loop) for loop in loops])
-        # Discard z-coordinate
-        loops = [np.array(loop)[:, [0, 1]].tolist() for loop in loops]
-
-        fig = plt.figure()
-        for color, loop in zip(colors, loops):
-            loop_arr = np.array(loop)
-            plt.plot(loop_arr[:, 0], loop_arr[:, 1], color=color)
-
-        ld = LineDrawer(fig)
-        line_cuts, line_cuts_shifted = ld.get_line_cuts()
-
-        fig, axes = plt.subplots(2, 1, sharex=True, sharey=True, figsize=(8, 8))
-        for line_cut, line_cut_shifted in zip(line_cuts, line_cuts_shifted):
-
-            continuous_loop, reverse_paths, _, _, _, direction = join_loops_at_cuts(
-                loops, line_cut, line_cut_shifted, colors)
-            self.FCu.append(continuous_loop)
-            self.BCu.append(reverse_paths)
-
-            color = 'r' if direction == 'cc' else 'b'
-            axes[0].plot(continuous_loop[:, 0], continuous_loop[:, 1],
-                         f'{color}-', alpha=0.6)
-            axes[1].plot(reverse_paths[:, 0], reverse_paths[:, 1], 'g',
-                         zorder=0, linewidth=3, alpha=0.6)
-        plt.show()
+        loops_2d = [loop[:, [0, 1]].tolist() for loop in loops_3d_mm]
+        return loops_3d_mm, loops_2d
 
 
 if __name__ == '__main__':

@@ -9,9 +9,6 @@ from bfieldtools.mesh_conductor import MeshConductor
 from bfieldtools.viz import plot_3d_current_loops
 
 from .base_coil import BaseCoil
-from .line_drawer import LineDrawer
-from .file_io import get_loop_colors
-from .make_pcb import join_loops_at_cuts
 
 
 def flatten_loops(loops):
@@ -129,44 +126,15 @@ class CylindricalCoil(BaseCoil):
         plotter.camera_position = 'xy'
         return plotter
 
-    def make_cuts(self):
-        """Make cuts to join loops interactively.
+    def _prepare_loops_for_cuts(self):
+        """Prepare loops for the make_cuts workflow.
 
-        The cylindrical loops are first flattened to 2D (arc_length vs z)
-        for display. The user draws cut lines with the LineDrawer GUI
-        (Ctrl+click to draw, U to undo). Results are stored in FCu and BCu.
+        Closes each loop, converts 3D coordinates to mm for color assignment,
+        and flattens to 2D (arc_length, z) in mm for display and cutting.
         """
-        import matplotlib.pyplot as plt
+        loops_3d_mm = [np.vstack([loop, loop[0]]) * 1000 for loop in self.loops_]
 
         flat_loops_mm = flatten_loops(self.loops_)
-        # Close each loop
-        closed = []
-        for loop in flat_loops_mm:
-            closed.append(np.vstack([loop, loop[0]]))
+        loops_2d = [np.vstack([loop, loop[0]]).tolist() for loop in flat_loops_mm]
 
-        colors = get_loop_colors([np.array(loop) for loop in closed])
-        loops_2d = [loop.tolist() for loop in closed]
-
-        fig = plt.figure()
-        for color, loop in zip(colors, loops_2d):
-            loop_arr = np.array(loop)
-            plt.plot(loop_arr[:, 0], loop_arr[:, 1], color=color)
-        plt.xlabel('Arc length (mm)')
-        plt.ylabel('z (mm)')
-
-        ld = LineDrawer(fig)
-        line_cuts, line_cuts_shifted = ld.get_line_cuts()
-
-        fig, axes = plt.subplots(2, 1, sharex=True, sharey=True, figsize=(8, 8))
-        for line_cut, line_cut_shifted in zip(line_cuts, line_cuts_shifted):
-            continuous_loop, reverse_paths, _, _, _, direction = \
-                join_loops_at_cuts(loops_2d, line_cut, line_cut_shifted, colors)
-            self.FCu.append(continuous_loop)
-            self.BCu.append(reverse_paths)
-
-            color = 'r' if direction == 'cc' else 'b'
-            axes[0].plot(continuous_loop[:, 0], continuous_loop[:, 1],
-                         f'{color}-', alpha=0.6)
-            axes[1].plot(reverse_paths[:, 0], reverse_paths[:, 1], 'g',
-                         zorder=0, linewidth=3, alpha=0.6)
-        plt.show()
+        return loops_3d_mm, loops_2d

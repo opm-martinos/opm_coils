@@ -9,7 +9,9 @@ from bfieldtools.contour import scalar_contour
 from bfieldtools.line_conductor import LineConductor
 
 from .metrics import homogeneity, efficiency, error
-from .file_io import export_to_kicad, _check_bounds
+from .file_io import export_to_kicad, _check_bounds, get_loop_colors
+from .make_pcb import join_loops_at_cuts
+from .line_drawer import LineDrawer
 
 
 class BaseCoil:
@@ -175,9 +177,51 @@ class BaseCoil:
         """The coil self-inductance in uH."""
         return self.coil_.s.coil_inductance(Nloops=len(self.loops_)) * 1e6
 
-    def make_cuts(self):
-        """Make cuts to join loops interactively."""
+    def _prepare_loops_for_cuts(self):
+        """Prepare loops for the make_cuts workflow.
+
+        Returns
+        -------
+        loops_3d_mm : list of array, shape (N_points, 3)
+            Closed loops in 3D coordinates (mm), used for color assignment.
+        loops_2d : list of list
+            Closed loops in 2D coordinates (mm), used for display and cutting.
+        """
         raise NotImplementedError
+
+    def make_cuts(self):
+        """Make cuts to join loops interactively.
+
+        Calls :meth:`_prepare_loops_for_cuts` to obtain 3D and 2D loop
+        representations, then launches the LineDrawer GUI for the user to
+        draw cut lines. Results are stored in ``FCu`` and ``BCu``.
+        """
+        import matplotlib.pyplot as plt
+
+        loops_3d_mm, loops_2d = self._prepare_loops_for_cuts()
+        colors = get_loop_colors(loops_3d_mm)
+
+        fig = plt.figure()
+        for color, loop in zip(colors, loops_2d):
+            loop_arr = np.array(loop)
+            plt.plot(loop_arr[:, 0], loop_arr[:, 1], color=color)
+
+        ld = LineDrawer(fig)
+        line_cuts, line_cuts_shifted = ld.get_line_cuts()
+
+        fig, axes = plt.subplots(2, 1, sharex=True, sharey=True, figsize=(8, 8))
+        for line_cut, line_cut_shifted in zip(line_cuts, line_cuts_shifted):
+            continuous_loop, reverse_paths, _, _, _, direction = join_loops_at_cuts(
+                loops_2d, line_cut, line_cut_shifted, colors)
+            self.FCu.append(continuous_loop)
+            self.BCu.append(reverse_paths)
+
+            color = 'r' if direction == 'cc' else 'b'
+            axes[0].plot(continuous_loop[:, 0], continuous_loop[:, 1],
+                         f'{color}-', alpha=0.6)
+            axes[1].plot(reverse_paths[:, 0], reverse_paths[:, 1], 'g',
+                         zorder=0, linewidth=3, alpha=0.6)
+        plt.show()
 
     def plot_coil(self, discretized=True):
         """Plot the coil."""
