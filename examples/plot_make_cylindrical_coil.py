@@ -8,7 +8,8 @@ The coil wraps around a cylindrical surface and can be unrolled into a flat
 flex PCB.
 """
 
-# Authors: Mainak Jas <mjas@mgh.harvard.edu>
+# Authors: Jack Kamataris <jakamataris@wpi.edu>
+#          Mainak Jas <mjas@mgh.harvard.edu>
 
 import numpy as np
 

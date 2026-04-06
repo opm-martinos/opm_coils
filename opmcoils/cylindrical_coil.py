@@ -1,6 +1,7 @@
 """Optimize cylindrical coils."""
 
-# Authors: Mainak Jas <mjas@mgh.harvard.edu>
+# Authors: Jack Kamataris <jakamataris@wpi.edu>
+#          Mainak Jas <mjas@mgh.harvard.edu>
 
 import numpy as np
 import pyvista as pv
