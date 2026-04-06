@@ -194,7 +194,7 @@ class CylindricalCoil:
             Computed metric values keyed by metric name.
         """
         if metrics == 'all':
-            metrics = ['efficiency', 'error', 'homog', 'inductance',
+            metrics = ['efficiency', 'error', 'homog',
                        'resistance', 'length']
 
         scores = dict()
