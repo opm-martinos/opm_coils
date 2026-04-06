@@ -1,0 +1,9 @@
+Plotted to '/home/jack/SMEG/Working_final/final_coil_Z_testing_size-F_Cu.gbr'.
+Created Gerber job file '/home/jack/SMEG/Working_final/final_coil_Z_testing_size-job.gbrjob'.
+Plotted to '/home/jack/SMEG/Working_final/final_coil_Z_testing_size-F_Cu.pdf'.
+Plotted to '/home/jack/SMEG/Working_final/final_coil_Z_testing_size-F_Cu.pdf'.
+Plotted to '/home/jack/SMEG/Working_final/final_coil_Z_testing_size-B_Cu.pdf'.
+Info: Done.
+Info: Done.
+Info: Done.
+Info: Done.
